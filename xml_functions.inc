@@ -92,7 +92,8 @@ return $xml_object;
 
 
 
-function GetXSLTable($root_element_name = 'records', $element_name = 'record', $link_address = 'reportItem.php', $link_id = 'id', $parent = '_rapoarte', $link_target='_blank', $action_link = "")
+function GetXSLTable($root_element_name = 'records', $element_name = 'record', $link_address = 'reportItem.php', $link_id = 'id', 
+        $parent = '_rapoarte', $link_target='_blank', $action_link = "", $css_class = "xml_table")
 {
 //la $parent trebuie specificat uneori tableul in care editez curent
 //treaba se face punand &amp;table=
@@ -123,7 +124,7 @@ $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>
 <xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\">
    <xsl:output method=\"html\"/>
        <xsl:template match=\"/\">
-            <table class=\"xml_table\">
+            <table class=\"".$css_class."\">
                 <tr>
                     <th>#</th>
                     <xsl:for-each select=\"/" . $root_element_name . "/" . $element_name . "[1]/*\">
@@ -421,7 +422,7 @@ foreach($coloane as $coloana)
     
         if($coloana['DATA_TYPE'] == "varchar")
         {
-            if($coloana['CHARACTER_MAXIMUM_LENGTH'] < 100)
+            if($coloana['CHARACTER_MAXIMUM_LENGTH'] < 101)
             {
                 //print("aaa");
                 if($coloana['REFERENCED_TABLE_NAME'] != "")
@@ -478,19 +479,19 @@ foreach($coloane as $coloana)
                     #$width = 100;
                     if($coloana['CHARACTER_MAXIMUM_LENGTH'] <= 10)
                     {
-                        $width = 30;
+                        $width = 50;
                     }
                     elseif(11 <= $coloana['CHARACTER_MAXIMUM_LENGTH'] && $coloana['CHARACTER_MAXIMUM_LENGTH'] < 31)
                     {
-                        $width = 50;
+                        $width = 200;
                     }
                     elseif(31 <= $coloana['CHARACTER_MAXIMUM_LENGTH'] && $coloana['CHARACTER_MAXIMUM_LENGTH'] < 51)
                     {
-                        $width = 100;
+                        $width = 300;
                     }
                     elseif(51 <= $coloana['CHARACTER_MAXIMUM_LENGTH'] && $coloana['CHARACTER_MAXIMUM_LENGTH'] < 100)
                     {
-                        $width = 400;
+                        $width = 600;
                     }
                     
                     $element = $element . "    <xsl:attribute name=\"style\">width:".$width."px</xsl:attribute>";
