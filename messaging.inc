@@ -1,5 +1,5 @@
 <?php
-//$query = "INSERT INTO utile_jobs_log VALUES (default, 'messaging', now(), 'OK', 'messaging');";
+//$query = "INSERT INTO seed_jobs_log VALUES (default, 'messaging', now(), 'OK', 'messaging');";
 //print($query);
 //$conn -> query($query);
 

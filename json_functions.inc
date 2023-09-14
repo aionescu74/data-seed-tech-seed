@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////
 //          IN $key_value SE PUN PARAMATRII CALL-ULUI       //
 //////////////////////////////////////////////////////////////
-function CallAPI($method, $url, $key_value = false, $headers="", $body="", $token="", &$responseContentType, &$httpCode)
+function CallAPI($method, $url, $key_value = false, $headers="", $body="", $token="", &$responseContentType = "", &$httpCode = "")
 {
     //print("From json_functions.inc, CallAPI, linia 7: ");
     //print($method);
@@ -72,10 +72,12 @@ function CallAPI($method, $url, $key_value = false, $headers="", $body="", $toke
             }
             break;
         default:
+            //print($method);
             if ($key_value)
             {
                $url = sprintf("%s?%s", $url, http_build_query($key_value));
             }
+            //print($url);
     }
     
 
@@ -90,9 +92,17 @@ function CallAPI($method, $url, $key_value = false, $headers="", $body="", $toke
         //);
         //curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         //curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/plain', $headers)); 
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array($headers));
         
-        //print('aaa');
+        if(is_array($headers))
+        {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        }
+        else
+        {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array($headers));
+        }
+        
+        //print_r(array($headers));
     }
     
     if($body != "")
@@ -157,13 +167,15 @@ function CallAPI($method, $url, $key_value = false, $headers="", $body="", $toke
     
     //var_dump(curl_getinfo($curl, CURLINFO_HEADER_OUT));
     
+    //curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2TLS);
+    
     $responseContentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
     //print($responseContentType);
     //print("<br/><br/><br/>");
     //print_r($result);
     //
     //print("URL: " . $url . "<br/>");
-    //print("ERROR: " . curl_errno ($curl). " - " .curl_error($curl));
+    //print("ERROR: " . curl_errno($curl). " - " .curl_error($curl));
 
     curl_close($curl);
     return $result;

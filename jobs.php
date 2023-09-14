@@ -7,7 +7,7 @@
 // 2. La intervalul setat cu $EXEC_INTERVAL se cheama jobsExecution.php care face acelasi lucru ca si cron.php, 
 // adica extrage joburile care trebuie rulate si le executa.
 
-require_once("../connection.inc");
+require_once("./connection.inc");
 require_once("./xml_functions.inc");
 require_once("./messaging.inc");
 require_once("./jobs_select.inc");
@@ -96,25 +96,12 @@ function load()
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body onload="load(); repeat(EXECUTION_INTERVAL)">
-    <div class="header">
-        <h1><a href="./" class="header">&#127968; Home</a>&nbsp;&nbsp;>&nbsp; Automatic jobs</h1>
-    </div>
-
-
-
-<div class="right">
-    
-    
-    <div id="jobResponse">...</div>
-    
-    
+<div class="header">
+    <h1><a href="./" class="header">&#127968; Home</a>&nbsp;&nbsp;>&nbsp; Automatic jobs</h1>
 </div>
 
-
-
-
-
-
-
+<div class="right">
+    <div id="jobResponse">...</div>
+</div>
 </body>
 </html>
