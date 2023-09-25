@@ -89,3 +89,19 @@ ALTER TABLE `seed_jobs_log`
 ALTER TABLE `seed_jobs`
   ADD CONSTRAINT `seed_jobs_ibfk_1` FOREIGN KEY (`jobType`) REFERENCES `seed_job_type` (`jobType`) ON DELETE RESTRICT ON UPDATE CASCADE;
 COMMIT;
+
+
+
+CREATE TABLE IF NOT EXISTS `seed_job_repetition_type` (
+  `repetitionType` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `repetitionTypeName` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`repetitionType`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+INSERT INTO `seed_job_repetition_type` (`repetitionType`, `repetitionTypeName`) VALUES
+('daily', 'Daily: specify hour as repetitionValue'),
+('once', 'Once: specify date as repetitionDay and hour as repetitionValue');
+
+
+ALTER TABLE `seed_jobs` ADD  FOREIGN KEY (`repetitionType`) REFERENCES `seed_job_repetition_type`(`repetitionType`) ON DELETE RESTRICT ON UPDATE CASCADE;
