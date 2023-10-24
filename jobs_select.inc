@@ -1,12 +1,12 @@
 <?php
-$jobs_select = "SELECT seed_jobs.jobId, jobType, jobAction, repetitionType, repetitionDay, repetitionValue, seed_jobs.lastRun, 
+$jobs_select = "SELECT seed_jobs.jobId, jobType, jobAction, repetitionType, repetitionDay, repetitionValue, LG.lastRun, 
     (CASE WHEN (repetitionType = 'daily')
     THEN
-         (case when (seed_jobs.lastRun is null)
+         (case when (LG.lastRun is null)
          then
             STR_TO_DATE(CONCAT(DATE_ADD(DATE(now()), INTERVAL 1 DAY), ' ', repetitionValue), '%Y-%m-%d %H:%i:%s')
          else
-            STR_TO_DATE(CONCAT(DATE_ADD(DATE(seed_jobs.lastRun), INTERVAL 1 DAY), ' ', repetitionValue), '%Y-%m-%d %H:%i:%s')
+            STR_TO_DATE(CONCAT(DATE_ADD(DATE(LG.lastRun), INTERVAL 1 DAY), ' ', repetitionValue), '%Y-%m-%d %H:%i:%s')
          end)
     WHEN (repetitionType = 'once')
     THEN
@@ -17,11 +17,11 @@ $jobs_select = "SELECT seed_jobs.jobId, jobType, jobAction, repetitionType, repe
 
     (CASE WHEN (repetitionType = 'daily')
     THEN
-         (case when (seed_jobs.lastRun is null)
+         (case when (LG.lastRun is null)
          then
             time_to_sec((TIMEDIFF(STR_TO_DATE(CONCAT(DATE(now()), ' ', repetitionValue), '%Y-%m-%d %H:%i:%s'), NOW())))
          else
-            time_to_sec((TIMEDIFF(STR_TO_DATE(CONCAT(DATE_ADD(DATE(seed_jobs.lastRun), INTERVAL 1 DAY), ' ', repetitionValue), '%Y-%m-%d %H:%i:%s'), NOW())))
+            time_to_sec((TIMEDIFF(STR_TO_DATE(CONCAT(DATE_ADD(DATE(LG.lastRun), INTERVAL 1 DAY), ' ', repetitionValue), '%Y-%m-%d %H:%i:%s'), NOW())))
          end)
     WHEN (repetitionType = 'once')
     THEN

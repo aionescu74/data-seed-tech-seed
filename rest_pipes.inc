@@ -4,11 +4,11 @@
 function execRestPipeStep($conn, $rest_pipe_code, $rest_pipe_step_code, $token, &$responseContentType, &$httpCode)
 {
     //testare
-    //$query = "INSERT INTO utile_jobs_log VALUES (default, 'execRestPipeStep', now(), 'OK', '1234');";
+    //$query = "INSERT INTO seed_jobs_log VALUES (default, 'execRestPipeStep', now(), 'OK', '1234');";
     //$result = $conn -> query($query);
     
     $query = "SELECT * 
-                FROM utile_http_rest_pipe_steps
+                FROM seed_http_rest_pipe_steps
                 WHERE rest_pipe_code = '".$rest_pipe_code."'
                 AND rest_pipe_step_code = '".$rest_pipe_step_code."'";
     $result   = $conn -> query($query);
@@ -19,12 +19,12 @@ function execRestPipeStep($conn, $rest_pipe_code, $rest_pipe_step_code, $token, 
     $body     = $row->body;
 
     $query1 = "SELECT param_key as k, default_value as v
-                FROM utile_http_rest_pipe_step_params
+                FROM seed_http_rest_pipe_step_params
                 WHERE rest_pipe_step_code = '".$rest_pipe_step_code."'";
     /*
     $query1 = "SELECT param_key as k, default_value as v 
-                FROM utile_http_rest_pipe_steps
-                INNER JOIN utile_http_rest_pipe_step_params ON utile_http_rest_pipe_steps
+                FROM seed_http_rest_pipe_steps
+                INNER JOIN seed_http_rest_pipe_step_params ON seed_http_rest_pipe_steps
                 WHERE rest_pipe_code = '".$rest_pipe_code."'
                 AND rest_pipe_step_code = '".$rest_pipe_step_code."'";
      * 
@@ -51,7 +51,7 @@ function execRestPipeStep($conn, $rest_pipe_code, $rest_pipe_step_code, $token, 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // ADD HERE LOGGING FOR STEP EXECUTION
     //  -- IN THIS MOMENT WE DON'T SAVE JSON/XML RESPONSE --
-    // insert into utile_rest_pipe_step_history...
+    // insert into seed_rest_pipe_step_history...
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     
     return($jsonORxml);
@@ -69,14 +69,14 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
     //print("<br/><br/>");
     
     //testare
-    //$query = "INSERT INTO utile_jobs_log VALUES (default, 'execRestPipe', now(), 'OK', '".$rest_pipe_code."');";
+    //$query = "INSERT INTO seed_jobs_log VALUES (default, 'execRestPipe', now(), 'OK', '".$rest_pipe_code."');";
     //$conn -> query($query);
     
     
     
     
     $query = "SELECT *
-                FROM utile_http_rest_pipe_steps
+                FROM seed_http_rest_pipe_steps
                 WHERE rest_pipe_code = '".$rest_pipe_code."'
                 ORDER BY execution_order";
     //print($query);
@@ -88,7 +88,7 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
     
     
     //testare
-    //$query = "INSERT INTO utile_jobs_log VALUES (default, 'execRestPipe', now(), 'OK', '1234');";
+    //$query = "INSERT INTO seed_jobs_log VALUES (default, 'execRestPipe', now(), 'OK', '1234');";
     //$conn -> query($query);
     
     //print('aa1');
@@ -99,7 +99,7 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
     {
         //print('aa2');
         //testare
-        //$query = "INSERT INTO utile_jobs_log VALUES (default, 'execRestPipe...', now(), 'OK', '".$row->rest_pipe_step_code."');";
+        //$query = "INSERT INTO seed_jobs_log VALUES (default, 'execRestPipe...', now(), 'OK', '".$row->rest_pipe_step_code."');";
         //$conn -> query($query);
         
         $rest_pipe_step_code = $row->rest_pipe_step_code;
@@ -149,7 +149,7 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
         else
         {
             $query_tabel = "SELECT DISTINCT tabel
-                    FROM utile_http_rest_pipe_step_mapping
+                    FROM seed_http_rest_pipe_step_mapping
                     WHERE rest_pipe_step_code = '".$rest_pipe_step_code."'";
             $result_tabel = $conn -> query($query_tabel);
 
@@ -160,7 +160,7 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
                 $i = 1;
 
                 $query1 = "SELECT *
-                    FROM utile_http_rest_pipe_step_mapping
+                    FROM seed_http_rest_pipe_step_mapping
                     WHERE rest_pipe_step_code = '".$rest_pipe_step_code."'
                     AND tabel = '".$row_tabel->tabel."'";
                 //print($query1);
@@ -197,7 +197,7 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
                 
                 
                 //testare
-                //$query = "INSERT INTO utile_jobs_log VALUES (default, 'before_messaging', now(), 'OK', '1234');";
+                //$query = "INSERT INTO seed_jobs_log VALUES (default, 'before_messaging', now(), 'OK', '1234');";
                 //$conn -> query($query);
                 //////////////////////////////////////////////////////////////////////////////////////////////////
                 //                           Messaging                                                          //
@@ -213,7 +213,7 @@ function execRestPipe($conn, $rest_pipe_code, $token, &$responseContentType)
     }
     
     //testare
-    //$query = "INSERT INTO utile_jobs_log VALUES (default, 'execRestPipe', now(), 'OK', '1234');";
+    //$query = "INSERT INTO seed_jobs_log VALUES (default, 'execRestPipe', now(), 'OK', '1234');";
     //$conn -> query($query);
     
     return($response);
