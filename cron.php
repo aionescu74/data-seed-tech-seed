@@ -11,7 +11,7 @@
 require_once("/home/intheory/public_html/connection.inc");
 
 //DEBUG STUFF:
-//$query = "INSERT INTO utile_jobs_log VALUES (default, 'start', now(), 'OK', 'cron.php');";
+//$query = "INSERT INTO seed_jobs_log VALUES (default, 'start', now(), 'OK', 'cron.php');";
 //$conn -> query($query);
 
 require_once("/home/intheory/public_html/seed/xml_functions.inc");
@@ -43,7 +43,7 @@ while($row = $resultX -> fetch_object())
         $token = "";
         
         
-        //$query = "INSERT INTO utile_jobs_log VALUES (default, 'daily', now(), 'OK', '123');";
+        //$query = "INSERT INTO seed_jobs_log VALUES (default, 'daily', now(), 'OK', '123');";
         //$result = $conn -> query($query);
         //print('aa1');
         /////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ while($row = $resultX -> fetch_object())
         if($jobType === "rest_pipe")
         {
             // DEBUG STUFF:
-            //$query = "INSERT INTO utile_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-rest-daily');";
+            //$query = "INSERT INTO seed_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-rest-daily');";
             //$conn -> query($query);
             
             
@@ -71,7 +71,7 @@ while($row = $resultX -> fetch_object())
         if($jobType === "script") // for php scripts, which are, in fact, included in the current run
         {
             // DEBUG STUFF:
-            $query = "INSERT INTO utile_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-script-daily');";
+            $query = "INSERT INTO seed_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-script-daily');";
             $conn -> query($query);
             
             $resp = '';
@@ -79,7 +79,7 @@ while($row = $resultX -> fetch_object())
             $okNok = 'OK';
         }
 
-        $query = "INSERT INTO utile_jobs_log VALUES (default, '".$jobId."', now(), '" . $okNok . "', '" . $resp . "');";
+        $query = "INSERT INTO seed_jobs_log VALUES (default, '".$jobId."', now(), '" . $okNok . "', '" . $resp . "');";
         $result = $conn -> query($query);
         
     }
@@ -90,7 +90,7 @@ while($row = $resultX -> fetch_object())
         $token = "";
         
         
-        //$query = "INSERT INTO utile_jobs_log VALUES (default, 'once', now(), 'OK', '123');";
+        //$query = "INSERT INTO seed_jobs_log VALUES (default, 'once', now(), 'OK', '123');";
         //$result = $conn -> query($query);
         
         /////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ while($row = $resultX -> fetch_object())
         if($jobType === "rest_pipe")
         {
             // DEBUG STUFF:
-            //$query = "INSERT INTO utile_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-rest-once');";
+            //$query = "INSERT INTO seed_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-rest-once');";
             //$conn -> query($query);
             
             $resp = execRestPipe($conn, $jobAction, $token, $responseContentType);
@@ -116,7 +116,7 @@ while($row = $resultX -> fetch_object())
         if($jobType === "script") // for php scripts, which are, in fact, included in the current run
         {
             // DEBUG STUFF:
-            //$query = "INSERT INTO utile_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-script-once');";
+            //$query = "INSERT INTO seed_jobs_log VALUES (default, '".$jobAction."', now(), 'OK', 'cron-script-once');";
             //$conn -> query($query);
             
             $resp = '';
@@ -124,13 +124,13 @@ while($row = $resultX -> fetch_object())
             $okNok = 'OK';
         }
         
-        $query = "INSERT INTO utile_jobs_log VALUES (default, '".$jobId."', now(), '" . $okNok . "', '" . $resp . "');";
+        $query = "INSERT INTO seed_jobs_log VALUES (default, '".$jobId."', now(), '" . $okNok . "', '" . $resp . "');";
         $result = $conn -> query($query);
     }
 }
 
 //testare
-//$query = "INSERT INTO utile_jobs_log VALUES (default, 'end', now(), 'OK', '1234');";
+//$query = "INSERT INTO seed_jobs_log VALUES (default, 'end', now(), 'OK', '1234');";
 //$conn -> query($query);
 
 //print('aaa');
