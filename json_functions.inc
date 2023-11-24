@@ -184,68 +184,7 @@ function CallAPI($method, $url, $key_value = false, $headers="", $body="", $toke
 
 
 
-/////////////////////////////////////////////
-//              CALL SEED API              //
-/////////////////////////////////////////////
-function CallSeedAPI($url, $table, $method, $id, $body, &$json)
-{
-/*
-$headers = array(
-    'Authorization: Basic '. base64_encode('admin:B10zbx1c.'),
-);
- */
-$headers = array(
-            'Content-type: application/json',
-            'Accept:application/json', 
-            'Authorization: Basic YWRtaW46QjEwemJ4MWMu');   //contine base64_encode('admin:B10zbx1c.')
 
-//$body       = "";
-//$parameters = array('table' => 'bvb_companii');
-
-
-$curl = curl_init();
-
-curl_setopt($curl, CURLOPT_URL, $url.'api/?table='.$table.'&id='.$id.'');
-curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-//curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
-//curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        
-//curl_setopt($curl, CURLOPT_USERPWD, base64_encode('admin:B10zbx1c.'));
-//$authorization = "Authorization: Bearer ".$token;
-//curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // Inject the token into the header
-//curl_setopt($curl, CURLOPT_HTTPHEADER, array('table' , $table));
-//curl_setopt($curl, CURLOPT_POST, true); 
-
-
-$json = curl_exec($curl);
-//print($response);
-//$json_beautified = str_replace(array("{", "}", '","'), array("{<br />&nbsp;&nbsp;&nbsp;&nbsp;", "<br />}", '",<br />&nbsp;&nbsp;&nbsp;&nbsp;"'), $response);
-//echo json_encode($response, JSON_PRETTY_PRINT);
-//print($json_beautified);
-
-
-//$information = curl_getinfo($curl, CURLINFO_HEADER_OUT);
-//print_r($information);
-//$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-//print('HTTP_RESPONSE: ');
-//print($httpCode);
-
-curl_close($curl);
-//return $json;
-
-$arr = json_decode($json, true);
-//print_r($arr);
-
-$pointer = ".records";                            // returneaza Array
-$arr = getPointerValue($arr, $pointer);
-return $arr;
-}
 
 
 
