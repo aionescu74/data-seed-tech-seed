@@ -47,8 +47,8 @@ function sendEmail($receiver_email, $subject, $body)
 {
     $headers = 'MIME-Version: 1.0' . "\r\n".
     'Content-type: text/html; charset=utf-8' . "\r\n".
-    'From: main@in-theory.info' . "\r\n" .
-    'Reply-To: main@in-theory.info' . "\r\n" .
+    'From: adrian.ionescu@data-seed.tech' . "\r\n" .
+    'Reply-To: adrian.ionescu@data-seed.tech' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
 
     

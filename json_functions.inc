@@ -187,7 +187,7 @@ function CallAPI($method, $url, $key_value = false, $headers="", $body="", $toke
 /////////////////////////////////////////////
 //              CALL SEED API              //
 /////////////////////////////////////////////
-function CallSeedAPI($url, $tabel, $method, $id, $body, &$json)
+function CallSeedAPI($url, $table, $method, $id, $body, &$json)
 {
 /*
 $headers = array(
@@ -200,12 +200,12 @@ $headers = array(
             'Authorization: Basic YWRtaW46QjEwemJ4MWMu');   //contine base64_encode('admin:B10zbx1c.')
 
 //$body       = "";
-//$parameters = array('tabel' => 'bvb_companii');
+//$parameters = array('table' => 'bvb_companii');
 
 
 $curl = curl_init();
 
-curl_setopt($curl, CURLOPT_URL, $url.'api/?tabel='.$tabel.'&id='.$id.'');
+curl_setopt($curl, CURLOPT_URL, $url.'api/?table='.$table.'&id='.$id.'');
 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 curl_setopt($curl, CURLOPT_TIMEOUT, 30);
@@ -219,7 +219,7 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
 //curl_setopt($curl, CURLOPT_USERPWD, base64_encode('admin:B10zbx1c.'));
 //$authorization = "Authorization: Bearer ".$token;
 //curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // Inject the token into the header
-//curl_setopt($curl, CURLOPT_HTTPHEADER, array('tabel' , $tabel));
+//curl_setopt($curl, CURLOPT_HTTPHEADER, array('table' , $table));
 //curl_setopt($curl, CURLOPT_POST, true); 
 
 

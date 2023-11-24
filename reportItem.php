@@ -76,6 +76,8 @@ $current_schema  = $row -> current_schema;
 
 function extractTableName($sql_select)
 {
+    //print($sql_select);
+    
     $tableName = "";
     $pos1 = strpos($sql_select, "FROM");
     if(strlen($pos1) === 0)
@@ -91,8 +93,20 @@ function extractTableName($sql_select)
     //print ($table);
     $str1 = substr($sql_select, $pos1 + 5, strlen($sql_select));
     //print ($str1);
+    
+    $first_space_position = strpos($str1, " ");
+    $first_cr_position = strpos($str1, "\r");
+    if($first_cr_position == "")
+    {
+        $first_cr_position = $first_space_position;
+    }
+    $first_newline_position = strpos($str1, "\n");
+    if($first_newline_position == "")
+    {
+        $first_newline_position = $first_space_position;
+    }
 
-    $pos2 = min(strpos($str1, " "), strpos($str1, "\n"), strpos($str1, "\r"));
+    $pos2 = min($first_space_position, $first_newline_position, $first_cr_position);
 
     //print ($pos2);
     if($pos2 == 0)
