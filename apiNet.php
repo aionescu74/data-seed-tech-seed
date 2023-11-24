@@ -177,7 +177,7 @@ function Delete()
 </head>
 <body>
     <div class="header">
-        <h1><a href="./" class="header">&#127968; Home</a>&nbsp;&nbsp;>&nbsp; &#128423; API Network</h1>
+        <h1><a href="./" class="header">&#127968; localhost</a>&nbsp;&nbsp;>&nbsp; &#128423; API Network</h1>
     </div>
 
 
@@ -197,6 +197,9 @@ function Delete()
         ?>
         <tr>
             <td>
+                <?php
+                $msg = json_encode(json_decode($msg), JSON_PRETTY_PRINT);
+                ?>
                 <textarea cols="100"><?php print("&nbsp;".$msg) ?></textarea><br/><br/>
             </td>
 	</tr>
@@ -244,10 +247,7 @@ function Delete()
         <input type="button" onclick="document.frmForm.id.value='';" value='x'>
         &nbsp;&nbsp;&nbsp;
         <input type="button" name="btnGet" class='button_default' onclick='Get()' value=' Get &#127907;' title="GET all values from SOURCE and DESTINATION">
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" name="btnPost" onclick='Post()' value=' Post &#128499;' title="INSERT BULK: insert all the record that cannot be found on destination">
-        &nbsp;&nbsp;
-        <input type="button" name="btnPut" onclick='Put()' value=' Put &#127744;' title="UPDATE BULK: only for records found on destination">
+        
         <br/><br/>
 
 
@@ -255,8 +255,20 @@ function Delete()
         <?php
             $json = "";
             $response = CallSeedAPI($url, $table , 'GET', $id, '', $json);
+            
+            $json = json_encode(json_decode($json), JSON_PRETTY_PRINT);
         ?>
-        <textarea rows="10" cols="100" name="txaBody"><?php print($json); ?></textarea><br/><br/>
+        <textarea rows="10" cols="100" name="txaBody"><?php print($json); ?></textarea>
+        <br/><br/>
+        
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" name="btnPost" onclick='Post()' value=' Post (INSERT)   &#128317; ' title="INSERT BULK: insert all the record that cannot be found on destination (no updates, duplicate fails)" style="width: 200px;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" name="btnPut" onclick='Put()' value=' Put (UPDATE) &#128315;' title="UPDATE BULK: only for records found on destination (no insert, new records ignored)">
     </div><br/><br/>
     
     
@@ -297,6 +309,8 @@ function Delete()
         <?php
             $json = "";
             $response = CallSeedAPI($urlDest, $tableDest, 'GET', $idDest, '', $json);
+            
+            $json = json_encode(json_decode($json), JSON_PRETTY_PRINT);
         ?>
         <textarea rows="10" cols="100"><?php print($json); ?></textarea><br/><br/>
     </div>
