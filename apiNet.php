@@ -267,7 +267,7 @@ function Delete()
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" name="btnPost" onclick='Post()' value=' Post (INSERT)   &#128317; ' title="INSERT BULK: insert all the record that cannot be found on destination (no updates, duplicate fails)" style="width: 200px;">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" name="btnPut" onclick='Put()' value=' Put (UPDATE) &#128315;' title="UPDATE BULK: only for records found on destination (no insert, new records ignored)">
     </div><br/><br/>
     

@@ -11,5 +11,16 @@
      | &nbsp;
     <a href="./entityView.php?app=_system&table=seed_app_reports ">&#128462; Reports</a>&nbsp;
      | &nbsp;
+     
+    <?php
+    if($environment == "localhost")
+    {
+    ?>
+    <a href="./apiNet.php">&#128423; SEED API Network</a>&nbsp;
+     | &nbsp;
+    <?php
+    }
+    ?>
+     
      <a target="_blank" href="https://data-seed.tech/tutorial.php">&#128712; Help</a>
 </div><br><br>
