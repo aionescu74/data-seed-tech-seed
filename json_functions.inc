@@ -195,12 +195,12 @@ function CallAPI($method, $url, $key_value = false, $headers="", $body="", $toke
  * 
  * POATE FI APELATA CAND UN REST INTOARCE JSON
  * SI IL PUTEM LUCRA CA XML
- */
+ *
 function arrayToXml($array, &$xml)
 {
     foreach ($array as $key => $value) {
         if(is_int($key)){
-            $key = "e";
+            $key = "record";
         }
         if(is_array($value)){
             $label = $xml->addChild($key);
@@ -213,9 +213,10 @@ function arrayToXml($array, &$xml)
         //print($xml->asXML());
         //print("\n\r\n\r");
     }
+    //print($xml);
     //return $xml;
 }
-
+*/
 
 
 

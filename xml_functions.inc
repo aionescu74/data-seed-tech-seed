@@ -83,10 +83,12 @@ while ($row = $result ->fetch_row())
 $xml = $xml . "</" . $root_element_name . ">";
 
 //print('xxxxx');
-//print $xml;
+//print_r($xml);
+//print("\n\r");
 //print('xxxxz');
 $xml_object = new SimpleXMLElement($xml);
 //print_r ($xml_object);
+//print("\n\r");
 return $xml_object;
 }
 
@@ -476,7 +478,7 @@ foreach($coloane as $coloana)
                                                <xsl:attribute name=\"name\">".$coloana['COLUMN_NAME']."_".$coloana['DATA_TYPE'].$coloana['ORDINAL_POSITION']."</xsl:attribute>";
                     $element = $element . "    <xsl:attribute name=\"value\">".htmlspecialchars($valori[$coloana['COLUMN_NAME']])."</xsl:attribute>";
                     $element = $element . "    <xsl:attribute name=\"maxlength\">".$coloana['CHARACTER_MAXIMUM_LENGTH']."</xsl:attribute>";
-                    #$width = 100;
+                    $width = 100;
                     if($coloana['CHARACTER_MAXIMUM_LENGTH'] <= 10)
                     {
                         $width = 50;

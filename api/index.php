@@ -211,6 +211,7 @@ if($table == "" && $report == "" && $view == "" && $entityItemReport == "")
         echo json_encode($rez);
     }
     
+    
     return;
 }
 
@@ -328,7 +329,7 @@ switch ($requestMethod) {
 case 'GET':
     if($table != "")
     {
-        getEntity($limit);
+        getEntity($limit, $format);
         break;
     }
     elseif($report != "")
@@ -340,7 +341,7 @@ case 'GET':
     elseif($view != "")
     {
         //print($report);
-        getView($limit);
+        getView($limit, $format);
         break;
     }
     elseif($entityItemReport != "")
@@ -409,7 +410,7 @@ default:
 }
 
 
-function getEntity($limit)
+function getEntity($limit, $format = "JSON")
 {
     global $conn, $table, $scope, $current_schema, $pk_name, $pk_value, $whereAttr, $whereValue, $whereClause;
     $rez=array();
@@ -542,8 +543,112 @@ function getEntity($limit)
         array_push($rez["records"], $item);
     }
     
-    echo json_encode($rez);
+    
+    
+    
+    
+    if($format == "JSON" || $format == "json" || $format == "")
+    {
+        echo json_encode($rez);
+    }
+    elseif($format == "XMLOBJ" || $format == "xmlobj")
+    {
+        //print_r($rez);
+        $xml = new SimpleXMLElement('<records/>');
+
+        arrayToXml($rez, $xml);
+        
+        print_r($xml);
+        return $xml;
+    }
+    elseif($format == "XML" || $format == "xml")
+    {
+        $query = "SELECT * FROM " . $table . "";
+        $root_element_name = "records";
+        $element_name = "record";
+        
+        try 
+        {
+            $result = $conn -> query($query);
+        }
+        catch(Exception $e)
+        {
+            print ($e->getMessage());
+        } 
+        //print ($query);
+
+        try 
+        {
+            $nr_coloane = $result->field_count;
+            //print ($nr_coloane);
+        }
+        catch(Exception $e)
+        {
+            print ($e->getMessage());
+        } 
+
+        $xml = "";
+        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n\r";
+        $xml = $xml . "<" . $root_element_name . ">\n\r";
+
+        //while ($row = $result ->fetch_object())
+        while ($row = $result ->fetch_row())
+        {
+            $xml = $xml . "<" . $element_name . ">";
+            $i = 0;
+            while ($i < $nr_coloane)
+            {
+                $nume_coloana = htmlentities(mysqli_fetch_field_direct($result, $i)->name, ENT_XML1, 'UTF-8');
+
+                if($nume_coloana == '')
+                {
+                    $nume_coloana = htmlspecialchars(mysqli_fetch_field_direct($result, $i)->name);
+                    //return;
+                }
+
+                if($nume_coloana == 'count(*)')
+                {
+                    print ("Eroare! Selectul nu poate fi count(*)! Trebuie sa aiba un alias!");
+                    return;
+                }
+                //$xml = $xml . "<" . $nume_coloana . ">" . htmlentities($row[$i], ENT_XML1, 'UTF-8') . "</" . $nume_coloana . ">";
+                $xml = $xml . "<" . $nume_coloana . ">" . htmlspecialchars($row[$i]) . "</" . $nume_coloana . ">";
+                //print(htmlspecialchars($row[$i]));
+                $i++;
+            }
+            //$xml = $xml . "<reference>" . $row->reference . "</reference>";
+            $xml = $xml . "</" . $element_name . ">\n\r";
+        }
+        $xml = $xml . "</" . $root_element_name . ">";
+        
+        print($xml);
+    }
 }
+
+
+
+function arrayToXml($array, &$xml)
+{
+    foreach ($array as $key => $value) {
+        if(is_int($key)){
+            $key = "record";
+        }
+        if(is_array($value)){
+            $label = $xml->addChild($key);
+            arrayToXml($value, $label);
+        }
+        else {
+            $xml->addChild($key, $value);
+        }
+        
+        //print($xml->asXML());
+        //print("\n\r\n\r");
+    }
+    //print($xml);
+    //return $xml;
+}
+
+
 
 
 function updateEntity()
@@ -873,7 +978,7 @@ function getReport($report)
 
 
 
-function getView($limit)
+function getView($limit, $format = "JSON")
 {
     global $conn, $view, $scope, $current_schema, $pk_name, $pk_value, $whereAttr, $whereValue, $whereClause;
     $rez=array();
@@ -1017,7 +1122,83 @@ function getView($limit)
         array_push($rez["records"], $item);
     }
     
-    echo json_encode($rez);
+    //echo json_encode($rez);
+    if($format == "JSON" || $format == "json" || $format == "")
+    {
+        echo json_encode($rez);
+    }
+    elseif($format == "XMLOBJ" || $format == "xmlobj")
+    {
+        //print_r($rez);
+        $xml = new SimpleXMLElement('<records/>');
+
+        arrayToXml($rez, $xml);
+        
+        print_r($xml);
+        return $xml;
+    }
+    elseif($format == "XML" || $format == "xml")
+    {
+        $query = "SELECT * FROM " . $view . "";
+        $root_element_name = "records";
+        $element_name = "record";
+        
+        try 
+        {
+            $result = $conn -> query($query);
+        }
+        catch(Exception $e)
+        {
+            print ($e->getMessage());
+        } 
+        //print ($query);
+
+        try 
+        {
+            $nr_coloane = $result->field_count;
+            //print ($nr_coloane);
+        }
+        catch(Exception $e)
+        {
+            print ($e->getMessage());
+        } 
+
+        $xml = "";
+        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n\r";
+        $xml = $xml . "<" . $root_element_name . ">\n\r";
+
+        //while ($row = $result ->fetch_object())
+        while ($row = $result ->fetch_row())
+        {
+            $xml = $xml . "<" . $element_name . ">";
+            $i = 0;
+            while ($i < $nr_coloane)
+            {
+                $nume_coloana = htmlentities(mysqli_fetch_field_direct($result, $i)->name, ENT_XML1, 'UTF-8');
+
+                if($nume_coloana == '')
+                {
+                    $nume_coloana = htmlspecialchars(mysqli_fetch_field_direct($result, $i)->name);
+                    //return;
+                }
+
+                if($nume_coloana == 'count(*)')
+                {
+                    print ("Eroare! Selectul nu poate fi count(*)! Trebuie sa aiba un alias!");
+                    return;
+                }
+                //$xml = $xml . "<" . $nume_coloana . ">" . htmlentities($row[$i], ENT_XML1, 'UTF-8') . "</" . $nume_coloana . ">";
+                $xml = $xml . "<" . $nume_coloana . ">" . htmlspecialchars($row[$i]) . "</" . $nume_coloana . ">";
+                //print(htmlspecialchars($row[$i]));
+                $i++;
+            }
+            //$xml = $xml . "<reference>" . $row->reference . "</reference>";
+            $xml = $xml . "</" . $element_name . ">\n\r";
+        }
+        $xml = $xml . "</" . $root_element_name . ">";
+        
+        print($xml);
+    }
 }
 
 
