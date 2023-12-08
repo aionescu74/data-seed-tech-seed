@@ -478,7 +478,7 @@ foreach($coloane as $coloana)
                                                <xsl:attribute name=\"name\">".$coloana['COLUMN_NAME']."_".$coloana['DATA_TYPE'].$coloana['ORDINAL_POSITION']."</xsl:attribute>";
                     $element = $element . "    <xsl:attribute name=\"value\">".htmlspecialchars($valori[$coloana['COLUMN_NAME']])."</xsl:attribute>";
                     $element = $element . "    <xsl:attribute name=\"maxlength\">".$coloana['CHARACTER_MAXIMUM_LENGTH']."</xsl:attribute>";
-                    $width = 100;
+                    $width = 300;
                     if($coloana['CHARACTER_MAXIMUM_LENGTH'] <= 10)
                     {
                         $width = 50;
@@ -491,9 +491,9 @@ foreach($coloane as $coloana)
                     {
                         $width = 300;
                     }
-                    elseif(51 <= $coloana['CHARACTER_MAXIMUM_LENGTH'] && $coloana['CHARACTER_MAXIMUM_LENGTH'] < 100)
+                    elseif(51 <= $coloana['CHARACTER_MAXIMUM_LENGTH'] && $coloana['CHARACTER_MAXIMUM_LENGTH'] <= 100)
                     {
-                        $width = 600;
+                        $width = 500;
                     }
                     
                     $element = $element . "    <xsl:attribute name=\"style\">width:".$width."px</xsl:attribute>";
@@ -808,6 +808,7 @@ function GetHTMLSelect($conn, $table, $id_value, $readonly = false)
     $result = $conn -> query($query);
     $row = $result -> fetch_object();
     $id_name = $row->COLUMN_NAME;
+    //print($id_name);
     
     /////////////////////////////////////
     //          displayable_name       //
@@ -821,8 +822,16 @@ function GetHTMLSelect($conn, $table, $id_value, $readonly = false)
     $result = $conn -> query($query);
     if(mysqli_num_rows ($result) > 0)
     {
+        //print('aaa');
         $row = $result -> fetch_object();
         $displayable_name = $row->COLUMN_NAME;
+        
+        if($displayable_name == $id_name && mysqli_num_rows($result) > 1) //choose another column than the pk
+        {
+             $row = $result -> fetch_row();
+             //$displayable_name = $row->COLUMN_NAME; // $row is now an array so this won't work
+             $displayable_name = $row[0];
+        }
     }
     else
     {
