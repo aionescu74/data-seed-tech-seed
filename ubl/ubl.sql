@@ -203,3 +203,44 @@ ALTER TABLE `fast_supplierparty`
   ADD CONSTRAINT `fast_supplierparty_ibfk_2` FOREIGN KEY (`PartyTaxSchemeTaxScheme`) REFERENCES `fast_taxscheme` (`TaxScheme`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fast_supplierparty_ibfk_3` FOREIGN KEY (`PostalAddressCountrySubentity`) REFERENCES `fast_countrysubentity` (`CountrySubentity`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fast_supplierparty_ibfk_4` FOREIGN KEY (`PostalAddressCountry`) REFERENCES `fast_country` (`fast_country`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
+
+CREATE TABLE IF NOT EXISTS `fast_invoice_paymentmeans` (
+  `fast_id` int NOT NULL AUTO_INCREMENT,
+  `fast_invoice_id` int NOT NULL,
+  `PaymentMeansCode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Tip cont de incasare - default 31',
+  `PayeeFinancialAccountID` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'IBAN connt de incasare',
+  PRIMARY KEY (`fast_id`),
+  KEY `fast_invoice_id` (`fast_invoice_id`),
+  KEY `PaymentMeansCode` (`PaymentMeansCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='INSTRUCŢIUNI DE PLATĂ-deocamdata inregistram doar 1-1 cu inv';
+
+INSERT INTO `fast_invoice_paymentmeans` (`fast_id`, `fast_invoice_id`, `PaymentMeansCode`, `PayeeFinancialAccountID`) VALUES
+(1, 1, '31', 'RO19INGB0000999900118521');
+
+CREATE TABLE IF NOT EXISTS `fast_paymentmeans` (
+  `PaymentMeanCode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PaymentMean` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Description` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`PaymentMeanCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Payment means nomenclature';
+
+INSERT INTO `fast_paymentmeans` (`PaymentMeanCode`, `PaymentMean`, `Description`) VALUES
+('31', 'Debit transfer', NULL),
+('54', 'Credit card', 'Payment made by means of credit card.'),
+('55', 'Debit card', 'Payment made by means of debit card.'),
+('ZZZ', 'Mutually defined', 'A code assigned within a code list to be used on an interim basis and as defined among trading partners until a precise code can be assigned to the code list.');
+
+CREATE TABLE IF NOT EXISTS `fast_taxscheme` (
+  `TaxScheme` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`TaxScheme`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `fast_taxscheme` (`TaxScheme`) VALUES
+('VAT');
+
+
+ALTER TABLE `fast_invoice_paymentmeans`
+  ADD CONSTRAINT `fast_invoice_paymentmeans_ibfk_1` FOREIGN KEY (`fast_invoice_id`) REFERENCES `fast_invoice` (`fast_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fast_invoice_paymentmeans_ibfk_2` FOREIGN KEY (`PaymentMeansCode`) REFERENCES `fast_paymentmeans` (`PaymentMeanCode`) ON DELETE RESTRICT ON UPDATE RESTRICT;
