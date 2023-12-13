@@ -5,7 +5,7 @@
     <xsl:template match="/">
         <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
             <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
-            <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:efactura.mfinante.ro:CIUS-RO:1.0.0</cbc:CustomizationID>
+            <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:efactura.mfinante.ro:CIUS-RO:1.0.1</cbc:CustomizationID>
             
             <xsl:element name="cbc:ID">
                 <xsl:value-of select="/records/record/ID"/>
@@ -151,7 +151,9 @@
                     </xsl:attribute>
                     <xsl:value-of select="/records/record/TaxAmount"/>
                 </cbc:TaxAmount>
-                
+            </cac:TaxTotal>
+            
+            <cac:LegalMonetaryTotal>
                 <cbc:LineExtensionAmount>
                     <xsl:attribute name="currencyID">
                         <xsl:value-of select="/records/record/DocumentCurrencyCode"/>
@@ -180,7 +182,7 @@
                     </xsl:attribute>
                     <xsl:value-of select="/records/record/PayableAmount"/>
                 </cbc:PayableAmount >
-            </cac:TaxTotal>
+            </cac:LegalMonetaryTotal>
         </Invoice>
     </xsl:template>
 
