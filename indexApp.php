@@ -99,6 +99,17 @@ $appIcon = $row->icon;
         ///////////////////////////////////////////////
         require_once("app_reports.inc");
         ?>
+        
+        
+        <br/><br/><br/><br/><hr/>
+        <b>&#128462; <?php print($appName); ?> App Filters:</b>
+        <br/><br/>
+        <?php
+        ///////////////////////////////////////////////
+        // APP FILTERS:
+        ///////////////////////////////////////////////
+        require_once("app_filters.inc");
+        ?>
     </div>
     
     
