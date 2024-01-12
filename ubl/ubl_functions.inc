@@ -34,7 +34,7 @@ function GetUBLInvoiceHeader($invoiceId)
     FROM `fast_invoice` INV
     LEFT JOIN fast_supplierparty SUP ON INV.fast_supplierparty = SUP.fast_id
     LEFT JOIN fast_customerparty CUST ON INV.fast_customerparty = CUST.fast_id
-    LEFT JOIN fast_invoice_paymentmeans PAY ON INV.fast_id = PAY.fast_invoice_id
+    LEFT JOIN fast_supplier_paymentmeans PAY ON SUP.fast_id = PAY.fast_supplier_id
     WHERE INV.fast_id = '" . $invoiceId . "';";
     
     $xml_object = GetXMLfromQuery($conn, $query);   // xml_functions.inc
@@ -62,6 +62,64 @@ function GetUBLInvoiceHeader($invoiceId)
     $cleanupXSL->load( './cleanup.xsl' );
     $proc->importStylesheet($cleanupXSL);
     $UBL = $proc->transformToXML($xml_object_inv);
+    $UBL = trim($UBL);
+    //return $UBL;
+    
+    
+    
+    $inv_taxsubtotal = GetUBLInvoiceTaxSubtotal($invoiceId);
+    $inv_taxsubtotal = str_replace('<xxx xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">', '', $inv_taxsubtotal);
+    $inv_taxsubtotal = str_replace('</xxx>', '', $inv_taxsubtotal);
+    
+    $inv_head = str_replace('<cac:TaxSubtotal>to be replaced</cac:TaxSubtotal>', $inv_taxsubtotal, $UBL);
+    
+    
+    
+    
+    
+    return $inv_head;
+}
+
+
+
+
+
+
+function GetUBLInvoiceTaxSubtotal($invoiceId)
+{
+    global $conn;
+    
+    $query = "SELECT ClassifiedTaxCategoryID, ClassifiedTaxCategoryPercent, ClassifiedTaxCategoryTaxSchemeID,
+                TaxExemptionReasonCode, sum(LineExtensionAmount) as TaxableAmount, PriceAmountCurrencyID
+                FROM `fast_invoiceline`
+                WHERE fast_invoice_id = '" . $invoiceId . "'
+                GROUP BY TaxExemptionReasonCode";
+    
+    $xml_object = GetXMLfromQuery($conn, $query);   // xml_functions.inc
+    
+    $proc = new XSLTProcessor();
+    
+    $XSL = new DOMDocument();
+    $XSL->load( './taxsubtotal.xsl' );
+    
+
+    $proc->importStylesheet($XSL);
+
+    $UBL = $proc->transformToXML($xml_object);
+    $UBL = trim($UBL);
+    //print_r($UBL);
+    
+    
+    
+    
+    
+    $dom = new DOMDocument;
+    $dom->loadXML($UBL);
+    $xml_object_inv = simplexml_import_dom($dom);
+    $cleanupXSL = new DOMDocument();
+    $cleanupXSL->load( './cleanup.xsl' );
+    $proc->importStylesheet($cleanupXSL);
+    $UBL = $proc->transformToXML($xml_object_inv);
     
     
     $UBL = trim($UBL);
@@ -69,6 +127,11 @@ function GetUBLInvoiceHeader($invoiceId)
     
     return $UBL;
 }
+
+
+
+
+
 
 
 function GetUBLInvoiceLines($invoiceId)

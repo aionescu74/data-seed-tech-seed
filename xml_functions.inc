@@ -69,11 +69,21 @@ while ($row = $result ->fetch_row())
         
         if($nume_coloana == 'count(*)')
         {
-            print ("Eroare! Selectul nu poate fi count(*)! Trebuie sa aiba un alias!");
+            print ("Error! Cannot use count(*)! You should use an alias!");
             return;
         }
         //$xml = $xml . "<" . $nume_coloana . ">" . htmlentities($row[$i], ENT_XML1, 'UTF-8') . "</" . $nume_coloana . ">";
-        $xml = $xml . "<" . $nume_coloana . ">" . htmlspecialchars($row[$i]) . "</" . $nume_coloana . ">";
+        
+        $show_lenght = 100;
+        if(strlen($row[$i]) < $show_lenght)
+        {
+            $xml = $xml . "<" . $nume_coloana . ">" . htmlspecialchars($row[$i]) . "</" . $nume_coloana . ">";
+        }
+        else
+        {
+            $xml = $xml . "<" . $nume_coloana . ">" . htmlspecialchars(substr($row[$i], 0, $show_lenght)) . "...</" . $nume_coloana . ">";
+        }
+        
         //print(htmlspecialchars($row[$i]));
         $i++;
     }

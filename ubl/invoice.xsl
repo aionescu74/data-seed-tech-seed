@@ -151,7 +151,13 @@
                     </xsl:attribute>
                     <xsl:value-of select="/records/record/TaxAmount"/>
                 </cbc:TaxAmount>
+            
+            
+                <cac:TaxSubtotal>to be replaced</cac:TaxSubtotal>
+            
+                
             </cac:TaxTotal>
+            
             
             <cac:LegalMonetaryTotal>
                 <cbc:LineExtensionAmount>

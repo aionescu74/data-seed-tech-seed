@@ -200,7 +200,7 @@ function Delete()
                 <?php
                 $msg = json_encode(json_decode($msg), JSON_PRETTY_PRINT);
                 ?>
-                <textarea cols="100"><?php print("&nbsp;".$msg) ?></textarea><br/><br/>
+                <textarea cols="100" rows="5"><?php print("&nbsp;".$msg) ?></textarea><br/><br/>
             </td>
 	</tr>
         <?php 
@@ -269,6 +269,7 @@ function Delete()
         <input type="button" name="btnPost" onclick='Post()' value=' Post (INSERT)   &#128317; ' title="INSERT BULK: insert all the record that cannot be found on destination (no updates, duplicate fails)" style="width: 200px;">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" name="btnPut" onclick='Put()' value=' Put (UPDATE) &#128315;' title="UPDATE BULK: only for records found on destination (no insert, new records ignored)">
+        <br/><br/>
     </div><br/><br/>
     
     
@@ -281,7 +282,7 @@ function Delete()
         
         <?php
         $json = "";
-        $response = CallSeedAPI($urlDest, '*' , 'GET', '', '', $json);
+        $response = CallSeedAPI($urlDest, '*' , 'GET', '', '', $json);   //definit doar LOCAL in connection.inc
         ?>
         &#128479; Destination table:
         <select id="tableDest" name="tableDest">
@@ -308,7 +309,7 @@ function Delete()
 
         <?php
             $json = "";
-            $response = CallSeedAPI($urlDest, $tableDest, 'GET', $idDest, '', $json);
+            $response = CallSeedAPI($urlDest, $tableDest, 'GET', $idDest, '', $json);   //definit doar LOCAL in connection.inc
             
             $json = json_encode(json_decode($json), JSON_PRETTY_PRINT);
         ?>
