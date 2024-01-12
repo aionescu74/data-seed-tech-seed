@@ -74,7 +74,7 @@ while ($row = $result ->fetch_row())
         }
         //$xml = $xml . "<" . $nume_coloana . ">" . htmlentities($row[$i], ENT_XML1, 'UTF-8') . "</" . $nume_coloana . ">";
         
-        $show_lenght = 100;
+        $show_lenght = 80;                          //used to cut long values to be properly shown in tables
         if(strlen($row[$i]) < $show_lenght)
         {
             $xml = $xml . "<" . $nume_coloana . ">" . htmlspecialchars($row[$i]) . "</" . $nume_coloana . ">";
