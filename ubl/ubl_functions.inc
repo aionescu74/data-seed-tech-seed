@@ -68,8 +68,8 @@ function GetUBLInvoiceHeader($invoiceId)
     
     
     $inv_taxsubtotal = GetUBLInvoiceTaxSubtotal($invoiceId);
-    $inv_taxsubtotal = str_replace('<xxx xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">', '', $inv_taxsubtotal);
-    $inv_taxsubtotal = str_replace('</xxx>', '', $inv_taxsubtotal);
+    $inv_taxsubtotal = str_replace('<tax-subtotals xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">', '', $inv_taxsubtotal);
+    $inv_taxsubtotal = str_replace('</tax-subtotals>', '', $inv_taxsubtotal);
     
     $inv_head = str_replace('<cac:TaxSubtotal>to be replaced</cac:TaxSubtotal>', $inv_taxsubtotal, $UBL);
     
@@ -89,13 +89,17 @@ function GetUBLInvoiceTaxSubtotal($invoiceId)
 {
     global $conn;
     
-    $query = "SELECT ClassifiedTaxCategoryID, ClassifiedTaxCategoryPercent, ClassifiedTaxCategoryTaxSchemeID,
-                TaxExemptionReasonCode, sum(LineExtensionAmount) as TaxableAmount, PriceAmountCurrencyID
+    $query = "SELECT ClassifiedTaxCategoryID, IFNULL(ClassifiedTaxCategoryPercent, 0.00) as ClassifiedTaxCategoryPercent,
+                ClassifiedTaxCategoryTaxSchemeID,
+                TaxExemptionReasonCode, sum(LineExtensionAmount) as TaxableAmount, 
+                ROUND((IFNULL(ClassifiedTaxCategoryPercent, 0)/100) * sum(LineExtensionAmount), 2) as TaxAmount,
+                PriceAmountCurrencyID
                 FROM `fast_invoiceline`
                 WHERE fast_invoice_id = '" . $invoiceId . "'
                 GROUP BY TaxExemptionReasonCode";
     
     $xml_object = GetXMLfromQuery($conn, $query);   // xml_functions.inc
+    //print_r($xml_object);
     
     $proc = new XSLTProcessor();
     
@@ -184,6 +188,26 @@ function GetUBLInvoice($invoiceId)
     $xml = $xml . $inv_lin . '</Invoice>';
     
     $xml = trim($xml);
-    return $xml;
+    
+    
+    
+    // enrichment 1: inlocuire AccountingCustomerParty - TaxScheme cu un element empty pentru neplatitorii de TVA (daca supplierul este salvat ca neplatitor):
+    //$xml = str_replace('<cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>', '<cac:TaxScheme/>', $xml);
+    
+    // TBD: trebuie definit un atribut care sa zica daca e platitor de TB+VA si pus un IF pentru enrichment
+    
+    $proc = new XSLTProcessor();
+    $dom = new DOMDocument;
+    $dom->loadXML($xml);
+    $xml_object_inv = simplexml_import_dom($dom);
+    $enrichmentXSL = new DOMDocument();
+    $enrichmentXSL->load( './enrichment1.xsl' );
+    
+    $proc->importStylesheet($enrichmentXSL);
+    $UBL = $proc->transformToXML($xml_object_inv);
+    
+    
+    //return $xml;
+    return $UBL;
    
 }

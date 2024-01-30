@@ -3,33 +3,41 @@
     <xsl:output omit-xml-declaration="yes" indent="yes" encoding="UTF-8"/>
 
     <xsl:template match="/">
-        <xxx>
+        <tax-subtotals>
             <xsl:for-each select="/records/record">
                 <cac:TaxSubtotal>
                     <cbc:TaxableAmount>
                         <xsl:attribute name="currencyID">
-                            <xsl:value-of select="/records/record/PriceAmountCurrencyID"/>
+                            <xsl:value-of select="PriceAmountCurrencyID"/>
                         </xsl:attribute>
-                        <xsl:value-of select="/records/record/TaxableAmount"/>
+                        <xsl:value-of select="TaxableAmount"/>
                     </cbc:TaxableAmount>
 
                     <cbc:TaxAmount>
                         <xsl:attribute name="currencyID">
-                            <xsl:value-of select="/records/record/PriceAmountCurrencyID"/>
+                            <xsl:value-of select="PriceAmountCurrencyID"/>
                         </xsl:attribute>
-                        0.00aaa
+                        <xsl:value-of select="TaxAmount"/>
                     </cbc:TaxAmount>
                     <cac:TaxCategory>
-                        <cbc:ID>O</cbc:ID>
-                        <cbc:Percent>0.00</cbc:Percent>
-                        <cbc:TaxExemptionReasonCode>VATEX-EU-O</cbc:TaxExemptionReasonCode>
+                        <cbc:ID>
+                            <xsl:value-of select="ClassifiedTaxCategoryID"/>
+                        </cbc:ID>
+                        <cbc:Percent>
+                            <xsl:value-of select="ClassifiedTaxCategoryPercent"/>
+                        </cbc:Percent>
+                        <cbc:TaxExemptionReasonCode>
+                            <xsl:value-of select="TaxExemptionReasonCode"/>
+                        </cbc:TaxExemptionReasonCode>
                         <cac:TaxScheme>
-                            <cbc:ID>VAT</cbc:ID>
+                            <cbc:ID>
+                                <xsl:value-of select="ClassifiedTaxCategoryTaxSchemeID"/>
+                            </cbc:ID>
                         </cac:TaxScheme>
                     </cac:TaxCategory>
                 </cac:TaxSubtotal>
             </xsl:for-each>
-        </xxx>
+        </tax-subtotals>
     </xsl:template>
 
 </xsl:stylesheet>
