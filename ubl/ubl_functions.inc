@@ -7,6 +7,7 @@ function GetUBLInvoiceHeader($invoiceId)
     global $conn;
     
     $query = "SELECT INV.ID, INV.IssueDate, INV.DueDate, INV.Note, INV.DocumentCurrencyCode,
+        SUP.fast_platitorTVA as SUPPlatitorTVA,
 	SUP.PartyName as SUPPartyName, 
         SUP.PostalAddressStreetName as SUPPostalAddressStreetName,
         SUP.PostalAddressCityName as SUPPostalAddressCityName, 
@@ -187,25 +188,38 @@ function GetUBLInvoice($invoiceId)
 
     $xml = $xml . $inv_lin . '</Invoice>';
     
-    $xml = trim($xml);
+    $UBL = trim($xml);
     
     
     
-    // enrichment 1: inlocuire AccountingCustomerParty - TaxScheme cu un element empty pentru neplatitorii de TVA (daca supplierul este salvat ca neplatitor):
-    //$xml = str_replace('<cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>', '<cac:TaxScheme/>', $xml);
+    // Enrichment 1: inlocuire AccountingCustomerParty - TaxScheme cu un element empty pentru neplatitorii de TVA (daca supplierul este salvat ca neplatitor):
+    // $xml = str_replace('<cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>', '<cac:TaxScheme/>', $xml);
     
-    // TBD: trebuie definit un atribut care sa zica daca e platitor de TB+VA si pus un IF pentru enrichment
+    global $conn;
     
-    $proc = new XSLTProcessor();
-    $dom = new DOMDocument;
-    $dom->loadXML($xml);
-    $xml_object_inv = simplexml_import_dom($dom);
-    $enrichmentXSL = new DOMDocument();
-    $enrichmentXSL->load( './enrichment1.xsl' );
+    $query = "SELECT INV.fast_supplierparty, SUP.fast_id, SUP.PartyName, SUP.fast_platitorTVA
+                FROM fast_invoice INV
+                INNER JOIN `fast_supplierparty` SUP ON INV.fast_supplierparty = SUP.fast_id
+                WHERE INV.fast_id = '" . $invoiceId . "';";
+    //print($query);
     
-    $proc->importStylesheet($enrichmentXSL);
-    $UBL = $proc->transformToXML($xml_object_inv);
+    $result = $conn -> query($query);
+    $row = $result -> fetch_object();
     
+    $platitorTVA = $row->fast_platitorTVA;
+    
+    if($platitorTVA == 0)
+    {
+        $proc = new XSLTProcessor();
+        $dom = new DOMDocument;
+        $dom->loadXML($xml);
+        $xml_object_inv = simplexml_import_dom($dom);
+        $enrichmentXSL = new DOMDocument();
+        $enrichmentXSL->load( './enrichmentPartyTaxScheme.xsl' );
+
+        $proc->importStylesheet($enrichmentXSL);
+        $UBL = $proc->transformToXML($xml_object_inv);
+    }
     
     //return $xml;
     return $UBL;
