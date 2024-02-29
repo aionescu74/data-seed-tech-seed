@@ -618,7 +618,7 @@ else
 <?php
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
-//                              EDIT FROM:                               //
+//                              EDIT FORM:                               //
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 $query = "SELECT C.COLUMN_NAME, C.ORDINAL_POSITION, C.COLUMN_DEFAULT, C.IS_NULLABLE, C.DATA_TYPE, C.CHARACTER_MAXIMUM_LENGTH, C.NUMERIC_PRECISION, C.NUMERIC_SCALE, C.COLUMN_KEY, C.EXTRA, C.COLUMN_COMMENT,
@@ -650,8 +650,14 @@ $proc = new XSLTProcessor();
 
 
 
-
-$query = "SELECT * FROM " . $table . " WHERE " . $id_name . " = '" . $id_value . "';";
+if($id_value != "")
+{
+    $query = "SELECT * FROM " . $table . " WHERE " . $id_name . " = '" . $id_value . "';";
+}
+else
+{
+    $query = "SELECT * FROM " . $table . " WHERE 1 = 2;";
+}
 //print($query);
 $result = $conn -> query($query);
 $row = $result -> fetch_object();

@@ -51,9 +51,9 @@ if($for == "")
 }
 else
 {
-    if($for != "count" && $for!= "report" && $for!= "sql_insert")
+    if($for != "count" && $for!= "report")
     {
-        print ("ERROR! Parameter 'for' may be only one of: 'count', 'report' or 'sql_insert'!!!");
+        print ("ERROR! Parameter 'for' may be only one of: 'count' or 'report'!!!");
     }
 }
 

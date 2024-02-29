@@ -38,7 +38,7 @@ $Page         = $p[sizeof($p)-1];
 $Folder         = $p[sizeof($p)-2];
 //print($Folder);
 
-if($Folder == "seed-reporting")
+if($Folder == "seed")
     $Folder = "";
 
 $Site = $_SERVER['HTTP_HOST'];
@@ -66,6 +66,25 @@ else
 {
     $visitor_id = $_COOKIE["dataseed"];
     //print($visitor_id);
+    print(session_id());
+    print("<br>");
+    
+    $query = "SELECT SessionID, IP FROM visitors WHERE ID = " . $visitor_id . ";";
+    //print($query);
+    $result = $conn -> query($query);
+    
+    if ($row = $result->fetch_object())
+    {
+        print($row->SessionID);
+        print("<br>");
+        
+        if($row->SessionID != session_id())
+        {
+            print("Unspecified error!");
+            die;
+        }
+    }
+    
     
     //PRELUNGIRE VALABILITATE:
     //setcookie("dataseed", $visitor_id, time() + (365*24*60*60*1000), "/");

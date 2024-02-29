@@ -89,7 +89,7 @@ $alert_max = "";
                 $alert_max = "";
             }
             ?>
-            <a href="report.php?app=<?php print($appCode); ?>&id=<?php print($reportId); ?><?php print("&for=criteriu"); ?>"><?php print($count); ?></a> &nbsp;
+            <a href="report.php?app=<?php print($appCode); ?>&id=<?php print($reportId); ?><?php print("&for=count"); ?>"><?php print($count); ?></a> &nbsp;
         </td>
         <td><?php print($reportDescription); ?></td>
         <td <?php if((strlen($alert_min) > 0) || (strlen($alert_max) > 0)) print(" style='background-color: #ff0000' title='Interval: " . $sqlMinCondition . " - " . $sqlMaxCondition . "'"); ?>>
