@@ -1,3 +1,9 @@
+<?php
+require_once("../connection.inc");
+require_once("../counter.inc");
+
+?>
+
 <html lang="RO">
 <head>
 <meta name="viewport" content="widtd=device-widtd, initial-scale=1.0">
@@ -5,13 +11,13 @@
 <title>Generare XML pentru sistemul e-factura</title>
 <meta name="description" content="Generare rapidă UBL pentru sistemul e-factura"/>
 <!--link rel="shortcut icon" href="./favicon.ico" /-->
-<link name="autdor" content="dataseed.info" />
+<link name="author" content="dataseed.info" />
 <link rel="stylesheet" type="text/css" href="./styles.css">
-<!--script type="text/javascript" src="./scripturi.js"></script-->
+<script type="text/javascript" src="./scripturi.js"></script>
 
 </head>
 
-<body>
+<body onload="start(<?php print($visitor_id); ?>)">
 <div class="header">
     <h1><a href="./" class="header">&#127968; fastinvoice.ro</a>
         &nbsp;&nbsp;>&nbsp; &#128196; Adăugare factură
@@ -50,4 +56,6 @@ Pentru e-Factura ai nevoie de: semnătură electronică, crearea unui cont în S
 <br/><br/><br/>
 <a href="./invoice.php">Adauga</a>
 
+
+<?php require_once("footer.inc"); ?>
 </div>

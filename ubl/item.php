@@ -167,7 +167,7 @@ if($for == "SAVE")
 <!--link rel="shortcut icon" href="./favicon.ico" /-->
 <link name="autdor" content="dataseed.info" />
 <link rel="stylesheet" type="text/css" href="./styles.css">
-<!--script type="text/javascript" src="./scripturi.js"></script-->
+<script type="text/javascript" src="./scripturi.js"></script>
 <script language=javascript>
 function Save()
 {
@@ -285,7 +285,7 @@ function invoice()
 </script>
 </head>
 
-<body>
+<body onload="start(<?php print($visitor_id); ?>)">
 <div class="header">
     <h1><a href="./" class="header">&#127968; fastinvoice.ro</a>
         &nbsp;&nbsp;>&nbsp; &#128196; Adăugare item factură
@@ -476,6 +476,7 @@ function invoice()
 </form>
 
 <br/><br/><br/>
+<?php require_once("footer.inc"); ?>
 </div>
 
 </div>
