@@ -41,7 +41,8 @@ $current_schema  = $row -> current_schema;
         
     <?php
     $query_menu = "SELECT seed_apps.appCode, seed_apps.appName, seed_apps.appDescription, seed_apps.icon
-                    FROM seed_apps;";
+                    FROM seed_apps
+                    WHERE active = 1;";
     $result_menu = $conn -> query($query_menu);
     while($row_menu = $result_menu -> fetch_object())
     {

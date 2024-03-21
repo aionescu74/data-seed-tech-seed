@@ -66,7 +66,7 @@ if($parent == "")
         
 
 $query_filter = "SELECT * FROM seed_filters WHERE filterCode = '".$filterCode."'";
-//print($query);
+#print($query_filter);
 $result_filter = $conn -> query($query_filter);
 $filter = $result_filter ->fetch_object();
 
@@ -114,7 +114,7 @@ print("<br/>");
 $no_of_records_per_page = 15;
 $offset = ($page - 1) * $no_of_records_per_page;
 
-//print($query);
+print($filter_query);
 $result = $conn -> query($filter_query);
 $total_rows = mysqli_num_rows($result);
 $total_pages = ceil($total_rows / $no_of_records_per_page);

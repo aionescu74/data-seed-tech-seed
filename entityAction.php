@@ -99,8 +99,12 @@ elseif($actionType === "cmd")
     $action = str_replace("{table}", $table, $action);
     $action = str_replace("{id}", $entityId, $action);
     //$entityId
-    $rez = shell_exec($action);
     
+    //$command = escapeshellcmd($action);
+    
+    $rez = shell_exec($action . "  2>&1; echo $?");
+    
+    //$msg = $command;
     //$okNok = 'OK';
 }
 ?>

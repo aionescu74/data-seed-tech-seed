@@ -53,8 +53,11 @@ $appIcon = $row->icon;
         <b>&#128479; <?php print($appName); ?> App Shortcuts:</b>
         <br/><br/>
         <?php
-        $query_menu = "SELECT seed_apps.appCode, seed_apps.appName, seed_apps.appDescription, seed_apps.icon,
-                                seed_menus.tableName, seed_menus.menuText
+        $query_menu = "SELECT seed_apps.appCode, seed_apps.appName, seed_apps.appDescription, 
+                            CASE WHEN seed_menus.icon IS NOT NULL THEN seed_menus.icon
+                            ELSE seed_apps.icon
+                            END AS icon,
+                            seed_menus.tableName, seed_menus.menuText
                         FROM seed_apps
                         INNER JOIN seed_menus ON seed_apps.appCode = seed_menus.appCode
                         WHERE seed_apps.appCode = '".$appCode."';";
