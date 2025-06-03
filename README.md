@@ -25,8 +25,8 @@ DATA SEED is a simple web application that automatically creates User Interface 
 * ALLWAYS USE HTTPS!!!!
 ------------------------------------------------------------------
 
-# Installation guide with print-screens: https://data-seed.tech/install.php
-# Tutorial: https://data-seed.tech/tutorial.php
+# Installation guide with print-screens: https://dataseed.info/install.php
+# Tutorial: https://dataseed.info/tutorial.php
 
 
 
