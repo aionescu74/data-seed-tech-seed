@@ -6,7 +6,7 @@
 function sendPushBullet($body)
 {
     $url    = "https://api.pushbullet.com/v2/pushes";
-    $token  = "o.uoEHPTrtBw2gIGptDOkHgL93t4vJAph0";
+    $token  = "...";
     
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
